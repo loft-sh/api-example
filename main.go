@@ -1,9 +1,27 @@
-# Example how to use the vCluster Platform API Types
+package main
 
-This example shows how to interact with the [vCluster Platform API Types](https://github.com/loft-sh/api)
+import (
+	"context"
+	"fmt"
 
-Using the types with [controller-runtime](https://github.com/kubernetes-sigs/controller-runtime):
-```go
+	loftclient "github.com/loft-sh/api/v4/pkg/clientset/versioned"
+
+	managementv1 "github.com/loft-sh/api/v4/pkg/apis/management/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/tools/clientcmd"
+	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+func main() {
+	// List users using controller-runtime client
+	ListUsersControllerRuntime()
+	// List users using regular kube client
+	ListUsersKubeClient()
+}
+
 var Scheme = runtime.NewScheme()
 
 func init() {
@@ -36,10 +54,7 @@ func ListUsersControllerRuntime() {
 		fmt.Println(user.Name)
 	}
 }
-```
 
-Using the types with regular [client-go](https://github.com/kubernetes/client-go):
-```go
 func ListUsersKubeClient() {
 	// get kube config
 	clientConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(clientcmd.NewDefaultClientConfigLoadingRules(), &clientcmd.ConfigOverrides{})
@@ -70,5 +85,3 @@ func ListUsersKubeClient() {
 		fmt.Println(user.Name)
 	}
 }
-```
-
